@@ -3,9 +3,13 @@ var mainState = {
     preload: function() {
         game.load.image('bird', 'assets/bird.png');
         game.load.image('pipe', 'assets/pipe.png');
+        game.load.image('background', 'assets/back.jpg');
+
+        game.load.audio('jump', 'assets/jump.wav');
     },
 
     create: function() {
+        game.add.tileSprite(0, 0, 400, 490, 'background');
         game.stage.backgroundColor = '#71c5cf';
         game.physics.startSystem(Phaser.Physics.ARCADE);
         this.bird = game.add.sprite(100, 245, 'bird');
@@ -22,14 +26,32 @@ var mainState = {
         this.score = 0;
         this.labelScore = game.add.text(20, 20, "0",
         { font: "30px Arial", fill: "#ffffff" });
+
+        this.bird.anchor.set(-0.2, 0.5);
+
+        this.jumpSound = game.add.audio('jump');
     },
 
     update: function() {
         if (this.bird.y < 0 || this.bird.y > 490)
             this.restartGame();
         game.physics.arcade.overlap(
-        this.bird, this.pipes, this.restartGame, null, this);
+            this.bird, this.pipes, this.hitPipe, null, this);
+
+        if (this.bird.angle < 20)
+        this.bird.angle += 1;
     },
+
+    hitPipe: function() {
+        if (this.bird.alive == false)
+            return;
+        this.bird.alive = false;
+        game.time.events.remove(this.timer);
+        this.pipes.forEach(function(p){
+            p.body.velocity.x = 0;
+        });
+    },
+
     addOnePipe: function(x, y) {
         var pipe = game.add.sprite(x, y, 'pipe');
         this.pipes.add(pipe);
@@ -40,16 +62,22 @@ var mainState = {
     },
 
     addRowOfPipes: function() {
-        var hole = Math.floor(Math.random() * 5) + 1;
+        var hole = Math.floor(Math.random() * 4) + 1;
         for (var i = 0; i < 8; i++)
             if (i != hole && i != hole + 1)
-                this.addOnePipe(400, i * 60 + 10);
+                this.addOnePipe(400, i * 80);
         this.score += 1;
-        this.labelScore.text = this.score; 
+        this.labelScore.text = this.score;
     },
 
     jump: function() {
+        if (this.bird.alive == false)
+            return;
         this.bird.body.velocity.y = -350;
+        var animation = game.add.tween(this.bird);
+        animation.to({angle: -20}, 100);
+        animation.start();
+        //this.jumpSound.play();
     },
     restartGame: function() {
         game.state.start('main');
