@@ -4,6 +4,9 @@ var styleText = { font: "30px Arial", fill: "#ffffff" };
 
 var mainState = {
     preload: function() {
+        // game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+        // game.scale.pageAlignHorizontally = true;
+        // game.scale.pageAlighVertically = true;
         game.load.image('bird', 'assets/monnkey.png');
         game.load.image('pipe', 'assets/snake-wall.png');
         game.load.image('background', 'assets/back.jpg');
@@ -23,7 +26,7 @@ var mainState = {
         var spaceKey = game.input.keyboard.addKey(
             Phaser.Keyboard.SPACEBAR);
             spaceKey.onDown.add(this.jump, this);
-
+        game.input.onTap.add(this.jump, this);
         this.pipes = game.add.group();
         this.bananes = game.add.group();
         var banana;
@@ -45,6 +48,7 @@ var mainState = {
         game.physics.arcade.overlap(
             this.bird, this.banana, this.hitBanana, null, this);
         if (this.bird.angle < 20)
+
         this.bird.angle += 1;
     },
 
