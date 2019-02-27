@@ -27,6 +27,9 @@ var mainState = {
             Phaser.Keyboard.SPACEBAR);
             spaceKey.onDown.add(this.jump, this);
         //game.input.onTap.add(this.jump, this);
+        game.input.onDown.add(function() {
+            this.jump;
+          });
         this.pipes = game.add.group();
         this.bananes = game.add.group();
         var banana;
@@ -41,10 +44,6 @@ var mainState = {
     },
 
     update: function() {
-        if (this.game.input.activePointer.isDown){
-            this.jump();
-        }
-
         if (this.bird.y < 0 || this.bird.y > 490)
             this.restartGame();
         game.physics.arcade.overlap(
