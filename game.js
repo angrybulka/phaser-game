@@ -4,8 +4,8 @@ var styleText = { font: "30px Arial", fill: "#ffffff" };
 
 var mainState = {
     preload: function() {
-        game.load.image('bird', 'assets/bird.png');
-        game.load.image('pipe', 'assets/pipe.png');
+        game.load.image('bird', 'assets/monnkey.png');
+        game.load.image('pipe', 'assets/snake-wall.png');
         game.load.image('background', 'assets/back.jpg');
         game.load.image('banana', 'assets/banana.png');
 
@@ -56,11 +56,12 @@ var mainState = {
         this.pipes.forEach(function(p){
             p.body.velocity.x = 0;
         });
+        this.banana.body.velocity = 0;
     },
 
-    render: function() {
-        game.debug.bodyInfo(this.bird, 10, 10, 'red')
-    },
+    // render: function() {
+    //     game.debug.bodyInfo(this.bird, 10, 10, 'red')
+    // },
 
     hitBanana: function() {
         this.score += 1;
