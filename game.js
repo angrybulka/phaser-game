@@ -4,9 +4,9 @@ var styleText = { font: "30px Arial", fill: "#ffffff" };
 
 var mainState = {
     preload: function() {
-        game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
-        game.scale.pageAlignHorizontally = true;
-        game.scale.pageAlighVertically = true;
+        // game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+        // game.scale.pageAlignHorizontally = true;
+        // game.scale.pageAlighVertically = true;
         game.load.image('bird', 'assets/monnkey.png');
         game.load.image('pipe', 'assets/snake-wall.png');
         game.load.image('background', 'assets/back.jpg');
