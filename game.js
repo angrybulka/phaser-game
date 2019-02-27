@@ -25,7 +25,8 @@ var mainState = {
             spaceKey.onDown.add(this.jump, this);
 
         this.pipes = game.add.group();
-
+        this.bananes = game.add.group();
+        var banana;
         this.timer = game.time.events.loop(1500, this.addRowOfPipes, this);
 
         this.score = 0;
@@ -56,10 +57,14 @@ var mainState = {
         });
     },
 
+    render: function() {
+        game.debug.bodyInfo(this.bird, 10, 10, 'red')
+    },
+
     hitBanana: function() {
         this.score += 1;
+        this.banana.kill();
         this.labelScore.text = this.score;
-
     },
 
     addOnePipe: function(x, y) {
@@ -72,11 +77,9 @@ var mainState = {
     },
 
     addOneBanana: function(x, y) {
-        var banana = game.add.sprite(x, y, 'banana');
-        game.physics.arcade.enable(banana);
-        banana.body.velocity.x = -200;
-        banana.checkWorldBounds = true;
-        banana.outOfBoundsKill = true;
+        this.banana = game.add.sprite(x, y, 'banana');
+        game.physics.arcade.enable(this.banana);
+        this.banana.body.velocity.x = -200;
     },
 
     addRowOfPipes: function() {
@@ -85,8 +88,8 @@ var mainState = {
             if (i != hole && i != hole + 1){
                 this.addOnePipe(400, i * 60 + 10);
             }
-            this.addOneBanana(400, hole * 60 + 35);
         }
+        this.addOneBanana(400, hole * 60 + 35);
     },
 
     jump: function() {
@@ -96,7 +99,7 @@ var mainState = {
         var animation = game.add.tween(this.bird);
         animation.to({angle: -20}, 100);
         animation.start();
-        //this.jumpSound.play();
+        this.jumpSound.play();
     },
     restartGame: function() {
         game.state.start('main');
