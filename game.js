@@ -32,6 +32,7 @@ var mainState = {
         this.score = 0;
         this.labelScore = game.add.text(20, 20, "0",
         styleText);
+        this.labelScore.text = "Score: " + this.score;
         this.bird.anchor.set(-0.2, 0.5);
         this.jumpSound = game.add.audio('jump');
     },
@@ -64,7 +65,7 @@ var mainState = {
     hitBanana: function() {
         this.score += 1;
         this.banana.kill();
-        this.labelScore.text = this.score;
+        this.labelScore.text = "Score: " + this.score;
     },
 
     addOnePipe: function(x, y) {
