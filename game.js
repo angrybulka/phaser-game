@@ -139,6 +139,8 @@ var gameTitle = {
         this.gameStartText.anchor.set(0.5);
         this.playBtn = game.add.text(game.world.centerX, game.world.centerY, 'Start play', {font: '24px Arial', fill: '#000'});
         this.playBtn.anchor.set(0.5);
+        this.gameHelp = game.add.text(game.world.centerX, game.world.centerY + 100, 'Use spacebar or \n click for jump', {font: '24px Arial', fill: '#000'});
+        this.gameHelp.anchor.set(0.5);
         game.input.onTap.addOnce(
             function() {
                 game.state.start('main');
