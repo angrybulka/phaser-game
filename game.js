@@ -154,7 +154,7 @@ var gameOverState = {
         this.gameOverText = game.add.text(game.world.centerX, game.world.centerY, ' ', {font: '24px Arial', fill: '#000'});
         this.gameOverText.visible = false;
         this.gameOverText.anchor.set(0.5);
-        this.gameResult = game.add.text(game.world.centerX, game.world.centerY +100, "Your score: " + mainState.score + " bananas", {font: '18px Arial', fill: '#000'});
+        this.gameResult = game.add.text(game.world.centerX, game.world.centerY +100, "Your score: " + mainState.score + " banana(s)", {font: '18px Arial', fill: '#000'});
         this.gameResult.anchor.set(0.5);
     },
     update: function() {
