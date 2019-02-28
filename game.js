@@ -3,18 +3,6 @@ var game = new Phaser.Game(400, 490, Phaser.AUTO, null);
 var styleText = { font: "30px Arial", fill: "#ffffff" };
 
 var mainState = {
-    preload: function() {
-        // game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
-        // game.scale.pageAlignHorizontally = true;
-        // game.scale.pageAlighVertically = true;
-        game.load.image('bird', 'assets/monnkey.png');
-        game.load.image('pipe', 'assets/snake-wall.png');
-        game.load.image('background', 'assets/back.jpg');
-        game.load.image('banana', 'assets/banana.png');
-
-        game.load.audio('jump', 'assets/jump.wav');
-    },
-
     create: function() {
         game.add.tileSprite(0, 0, 400, 490, 'background');
         game.stage.backgroundColor = '#71c5cf';
@@ -25,10 +13,7 @@ var mainState = {
         var spaceKey = game.input.keyboard.addKey(
             Phaser.Keyboard.SPACEBAR);
             spaceKey.onDown.add(this.jump, this);
-        //game.input.onTap.add(this.jump, this);
-        game.input.onDown.add(function() {
-            this.jump;
-          });
+        game.input.onTap.add(this.jump, this);
         this.pipes = game.add.group();
         this.bananes = game.add.group();
         var banana;
@@ -63,6 +48,7 @@ var mainState = {
             p.body.velocity.x = 0;
         });
         this.banana.body.velocity = 0;
+        game.state.start("gameOverS");
     },
 
     // render: function() {
@@ -113,6 +99,75 @@ var mainState = {
         game.state.start('main');
     }
 };
-game.state.add('main', mainState);
-game.state.start('main');
 
+var bootState = {
+    preload: function() {
+        game.load.image('loading', 'assets/loading.png');
+    },
+    create: function() {
+        // game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+        // game.scale.pageAlignHorizontally = true;
+        // game.scale.pageAlighVertically = true;
+
+        game.state.start('preloadState');
+    }
+};
+
+var preloadState = {
+    preload: function() {
+        game.load.image('bird', 'assets/monnkey.png');
+        game.load.image('pipe', 'assets/snake-wall.png');
+        game.load.image('background', 'assets/back.jpg');
+        game.load.image('banana', 'assets/banana.png');
+        game.load.image('titleBack', 'assets/background.png');
+        game.load.audio('jump', 'assets/jump.wav');
+
+        var loadingBar = game.add.sprite(game.world.centerX, game.world.centerY, 'loading');
+        loadingBar.anchor.set(0.5);
+        game.load.setPreloadSprite(loadingBar);
+        },
+
+    create: function() {
+        game.state.start('gameTitle');
+    }
+};
+
+var gameTitle = {
+    create: function() {
+        game.add.tileSprite(0, 0, 400, 490, 'titleBack');
+        this.gameStartText = game.add.text(game.world.centerX, game.world.centerY - 100, 'Hungry Monkey', {font: '40px Arial', fill: '#00'});
+        this.gameStartText.anchor.set(0.5);
+        this.playBtn = game.add.text(game.world.centerX, game.world.centerY, 'Start play', {font: '24px Arial', fill: '#000'});
+        this.playBtn.anchor.set(0.5);
+        game.input.onTap.addOnce(
+            function() {
+                game.state.start('main');
+            }
+        );
+    }
+};
+var gameOverState = {
+    create: function() {
+        game.add.tileSprite(0, 0, 400, 490, 'titleBack');
+        this.gameOverText = game.add.text(game.world.centerX, game.world.centerY, ' ', {font: '16px Arial', fill: '#000'});
+        this.gameOverText.visible = false;
+        this.gameOverText.anchor.set(0.5);
+    },
+    update: function() {
+        this.gameOverText.text = "GAME OVER \n Click to restart!";
+        this.gameOverText.visible = true;
+
+        game.input.onTap.addOnce(
+            function() {
+                game.state.start('main');
+            }
+        );
+    }
+};
+
+game.state.add('boot', bootState);
+game.state.add('preloadState', preloadState);
+game.state.add('gameTitle', gameTitle);
+game.state.add('main', mainState);
+game.state.add('gameOverS', gameOverState);
+game.state.start('boot');
