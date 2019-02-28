@@ -29,7 +29,7 @@ var mainState = {
 
     update: function() {
         if (this.bird.y < 0 || this.bird.y > 490)
-            this.restartGame();
+            game.state.start("gameOverS");
         game.physics.arcade.overlap(
             this.bird, this.pipes, this.hitPipe, null, this);
         game.physics.arcade.overlap(
@@ -149,9 +149,11 @@ var gameTitle = {
 var gameOverState = {
     create: function() {
         game.add.tileSprite(0, 0, 400, 490, 'titleBack');
-        this.gameOverText = game.add.text(game.world.centerX, game.world.centerY, ' ', {font: '16px Arial', fill: '#000'});
+        this.gameOverText = game.add.text(game.world.centerX, game.world.centerY, ' ', {font: '24px Arial', fill: '#000'});
         this.gameOverText.visible = false;
         this.gameOverText.anchor.set(0.5);
+        this.gameResult = game.add.text(game.world.centerX, game.world.centerY +100, "Your score: " + mainState.score + " bananas", {font: '18px Arial', fill: '#000'});
+        this.gameResult.anchor.set(0.5);
     },
     update: function() {
         this.gameOverText.text = "GAME OVER \n Click to restart!";
