@@ -1,3 +1,3 @@
 # phaser-game
 TZ for MH
-https://angrybulka.github.io/phaser-game/
+https://petermarkovich.github.io/phaser-game/
